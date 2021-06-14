@@ -98,6 +98,8 @@ class DSC{
    addData(data, tk){
         //Data needs:  label, type, data, acces
 
+        let rs = "";
+
         let valid = false;
 
         if(this.searchToken(tk)){
@@ -108,11 +110,13 @@ class DSC{
             this.data.push(data)
             this.broadcastToBackup(data, tk);
         
-            return "OK";
+            rs =  "OK";
+            return rs
+        }else{
+            rs = "INCORRECT TOKEN"
+            return rs
         }
 
-
-       return "INVALID TOKEN"
    }
 
    searchToken(tk){
@@ -147,7 +151,7 @@ class DSC{
         
 
         if(!this.searchToken(tk) || !tk){
-            return "INVALID TOKEN"
+           dataArray.push("INVALID TOKEN")
         }
 
        

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const DSC = require("./dsc")
-const dsc = new DSC("YOUR GENESIS NODE", "YOUR ADMIN TOKEN")
+const dsc = new DSC("http://localhost:3000", "SLgamer12*")
 const rp = require("request-promise");
 
 //CENTRAL NODES API
@@ -10,8 +10,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
 
+
 app.listen("3000", ()=>{
     console.log("Database UP")
+})
+
+app.get("/", (req, res)=>{
+    res.send("ONLINE")
 })
 
 app.post("/node", (req, res)=>{
@@ -44,7 +49,7 @@ app.post("/relay", (req, res)=>{
 
 app.post("/data", (req, res)=>{
     
-    //console.log(req.body)
+    console.log(req.body)
 
     res.send(dsc.addData(req.body, req.body.token))
 })
@@ -76,3 +81,4 @@ app.post("/token", (req, res)=>{
 
     res.send(dsc.addToken(tk, adminToken))
 })
+
