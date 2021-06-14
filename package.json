@@ -1,0 +1,24 @@
+{
+  "name": "dsc-backup-genesis",
+  "version": "1.0.0",
+  "description": "dsc-backup genesis client",
+  "main": "app.js",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "express": "^4.17.1",
+    "request-promise": "^4.2.6",
+    "request-promise-core": "^1.1.4"
+  },
+  "scripts": {
+    "test": "node app.js"
+  },
+  "keywords": [
+    "DSC",
+    "DSC-BACKUP",
+    "dsc",
+    "dsc-backup",
+    "dsc-backup-genesis"
+  ],
+  "author": "svcu2310",
+  "license": "MIT"
+}
