@@ -72,17 +72,23 @@ class DSC{
         
     }
 
-    broadcastToBackup(data, token){
+    update(data, tk){
+        if(tk == this.adminToken){
+            this.data.push(data);
+        }
+    }
+
+    broadcastToBackup(data){
         let requests = [];
 
         this.backup.forEach(bc => {
             const options = {
-                uri: bc+"/"+"data",
+                uri: bc+"/update",
                 method: "post",
                 json: true,
                 body: {
-                    "token" : token,
-                    data
+                    tk: this.adminToken,
+                    data: data
                 }
 
                 
@@ -134,9 +140,9 @@ class DSC{
 
        this.tokens.forEach(token => {
 
-      //  console.log(token)
+       //console.log(tk)
 
-           if(token == tk.toString()){
+           if(token == tk){
 
            //  console.log("OK");
 

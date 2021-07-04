@@ -19,12 +19,34 @@ app.get("/", (req, res)=>{
     res.send("ONLINE")
 })
 
+
+
 app.post("/node", (req, res)=>{
-    res.send (dsc.addNode("http://"+req.body.node));
+    const tk = dsc.addNode("http://"+req.body.node);
+    const backups = dsc.backup;
+    const requests = [];
+
+    backups.forEach(bc => {
+        const options = {
+            uri : bc+"/token",
+            method : "post",
+            json: true,
+            body: {
+                tk: tk,
+                adminToken: dsc.adminToken
+            }
+        }
+
+        requests.push(rp(options));
+    })
+
+    Promise.all(requests).then(res => console.log(res));
+
+    res.send(tk)
 })
 
 app.post("/dsc", (req, res)=>{
-    res.send(dsc.updatedsc(req.body.genesisNode, req.body.adminToken, req.body.data, req.body.nodes, req.body.tokens, req.body.tk, req.body.backup));
+    res.send(dsc.updateDJS(req.body.genesisNode, req.body.adminToken, req.body.data, req.body.nodes, req.body.tokens, req.body.tk, req.body.backup));
 })
 
 app.post("/relay", (req, res)=>{
@@ -43,7 +65,14 @@ app.post("/relay", (req, res)=>{
         }
     }
 
-    rp(options).then(response => res.send(response))
+    console.log(options)
+
+    
+
+    rp(options).then(response => {
+        dsc.addBackup(req.body.uri, req.body.tk);
+        res.send(response)
+    })
 })
 
 
@@ -80,5 +109,9 @@ app.post("/token", (req, res)=>{
     const adminToken = req.body.adminToken;
 
     res.send(dsc.addToken(tk, adminToken))
+})
+
+app.post("/update", (req, res)=>{
+    dsc.update(req.body.data, req.body.tk)
 })
 
