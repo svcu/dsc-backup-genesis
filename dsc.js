@@ -1,5 +1,7 @@
 const rp = require("request-promise");
 const SHA256 = require("crypto-js/sha256");
+const cryptojs = require("crypto-js");
+const AES = require("crypto-js/aes");
 
 //CLIENT
 
@@ -95,7 +97,7 @@ class DSC{
         })
     }
 
-   addData(data, tk){
+   addData(data, tk, secret){
         //Data needs:  label, type, data, acces
 
         let rs = "";
@@ -107,7 +109,11 @@ class DSC{
         }
 
         if(valid){
-            this.data.push(data)
+            //console.log(data)
+            const encrypted = AES.encrypt(JSON.stringify(data), secret).toString();
+            console.log(encrypted);
+
+            this.data.push(encrypted)
             this.broadcastToBackup(data, tk);
         
             rs =  "OK";
@@ -144,7 +150,7 @@ class DSC{
       return v;
    }
 
-   getData(label, tk){
+   getData(label, tk, secret){
         let el;
         let dataArray = [];
 
@@ -152,11 +158,23 @@ class DSC{
 
         if(!this.searchToken(tk) || !tk){
            dataArray.push("INVALID TOKEN")
+           return dataArray;
         }
 
        
 
        this.data.forEach(data => {
+
+        //console.log("DATA", data);
+
+        const bytes = AES.decrypt(data, secret);
+
+        console.log(bytes)
+
+        data = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
+
+        //console.log(data);
+
            if(data.body.label == label && data.body.acces == "open"){
                el  = data.body.data;
                dataArray.push(el);

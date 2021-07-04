@@ -51,13 +51,13 @@ app.post("/data", (req, res)=>{
     
     console.log(req.body)
 
-    res.send(dsc.addData(req.body, req.body.token))
+    res.send(dsc.addData(req.body, req.body.token, req.body.secret));
 })
 
 
 app.get("/data", (req, res)=>{
     //console.log("Search command")
-    res.send(dsc.getData(req.body.label, req.body.token));
+    res.send(dsc.getData(req.body.label, req.body.token, req.body.secret));
 })
 
 app.get("/backups", (req, res)=>{

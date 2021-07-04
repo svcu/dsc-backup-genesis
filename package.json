@@ -1,6 +1,6 @@
 {
   "name": "dsc-backup-genesis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "dsc-backup genesis client",
   "main": "app.js",
   "dependencies": {
